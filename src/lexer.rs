@@ -42,12 +42,18 @@ impl Lexer {
     /// ````
     pub fn next_token(&mut self) -> Token {
         let tok = match self.ch {
+            Some('\\') => {
+                // consume the backslash
+                self.read_char();
+                let word = self.read_word();
+                self.match_command(word)
+            }
             Some(ch) => {
                 if ch.is_digit(10) {
                     return self.read_number();
                 } else if ch.is_alphabetic() {
                     let word = self.read_word();
-                    return self.match_keyword_or_identifier(word);
+                    return self.match_unit_or_identifier(word);
                 }
                 Token::Illegal
             }
@@ -70,9 +76,9 @@ impl Lexer {
     /// # Example
     /// ````
     /// let word = self.read_word();
-    /// let token = self.match_keyword_or_identifier(word);
+    /// let token = self.match_unit_or_identifier(word);
     /// ````
-    fn match_keyword_or_identifier(&mut self, word: String) -> Token {
+    fn match_unit_or_identifier(&mut self, word: String) -> Token {
         match word.to_lowercase().as_str() {
             "mm" => Token::Millimeter,
             "cm" => Token::Centimeter,
@@ -81,6 +87,21 @@ impl Lexer {
             "c" => Token::Celcius,
             "f" => Token::Fahrenheit,
             _ => Token::Identifier(word),
+        }
+    }
+
+    /// Matches the read word from self.read_word to a command or an illegal token.
+    /// # Example
+    /// ````
+    /// let word = self.read_word();
+    /// let token = self.match_command(word);
+    /// ````
+    fn match_command(&self, word: String) -> Token {
+        match word.to_lowercase().as_str() {
+            "cp" => Token::CopyCmd,
+            "help" => Token::HelpCmd,
+            "h" => Token::HelpCmd, // shorthand
+            _ => Token::Illegal,
         }
     }
 
