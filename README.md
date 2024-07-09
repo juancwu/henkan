@@ -6,7 +6,7 @@ Ergonomic unit converter in the terminal.
 
 As of now, for the MVP, this is the entire grammar for the unit converter.
 
-`<command> := <keyword> <command'>`
+`<command> := \<keyword> <command'>`
 `<command'> := <arg> <command'> | E`
 `<arg> := -<letter><arg'>`
 `<arg'> := <letter><arg'> | E`
