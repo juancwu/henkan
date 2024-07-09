@@ -1,6 +1,6 @@
 use std::io::{self, BufRead, Write};
 
-use crate::lexer::Lexer;
+use crate::{lexer::Lexer, token::Token};
 
 // NOTE: `mod` declares the module available to the compiler.
 mod lexer;
@@ -14,8 +14,14 @@ fn main() {
     for line in stdin.lock().lines() {
         let l = line.unwrap();
         let mut lexer = Lexer::new(l);
-        let token = lexer.next_token();
-        println!("token: {:?}", token);
+        let mut token: Token;
+        while !lexer.is_end() {
+            token = lexer.next_token();
+            if token == Token::EOL {
+                break;
+            }
+            println!("token: {:?}", token);
+        }
         print!("> ");
         io::stdout().flush().unwrap();
     }

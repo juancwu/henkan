@@ -83,6 +83,14 @@ impl Lexer {
         tok
     }
 
+    // Check if we have reached the end of the input
+    pub fn is_end(&self) -> bool {
+        match self.peek_char() {
+            Some(_) => false,
+            None => true,
+        }
+    }
+
     // Reads a word which can be a keyword for commands, or units.
     fn read_word(&mut self) -> String {
         let pos = self.pos;
