@@ -6,10 +6,6 @@ Ergonomic unit converter in the terminal.
 
 As of now, for the MVP, this is the entire grammar for the unit converter.
 
-commands to do a quick copy of result of the last input
-commands show a help menu
-etc
-
 `<command> := <keyword> <command'>`
 `<command'> := <arg> <command'> | E`
 `<arg> := -<letter><arg'>`
