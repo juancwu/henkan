@@ -41,6 +41,7 @@ impl Lexer {
     /// let token = lexer.next_token();
     /// ````
     pub fn next_token(&mut self) -> Token {
+        self.skip_whitespaces();
         let tok = match self.ch {
             // this matches negative numbers or command arguments
             Some('-') => {
@@ -176,6 +177,17 @@ impl Lexer {
             None
         } else {
             self.input.chars().nth(self.lead_pos)
+        }
+    }
+
+    /// Skips whitespaces. Yes, just that.
+    fn skip_whitespaces(&mut self) {
+        while let Some(ch) = self.ch {
+            if ch.is_whitespace() {
+                self.read_char();
+            } else {
+                break;
+            }
         }
     }
 }
