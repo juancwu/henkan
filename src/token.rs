@@ -12,10 +12,20 @@ pub enum Token {
 
     VerbOp, // verb operator
 
-    // Units
-    MetricUnit,
-    TemperatureUnit,
+    // Metric
+    Millimeter,
+    Centimeter,
+    Meter,
+    Kilometer,
+
+    // Temperature
+    Celcius,
+    Fahrenheit,
 
     // Identifier for commands and arguments
     Identifier(String),
+
+    // Command Keywords
+    CopyCmd,
+    HelpCmd,
 }
