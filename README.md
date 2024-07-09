@@ -18,7 +18,7 @@ etc
 `<value> := <number><unit>`
 `<operator> := to | in | as`
 `<unit> := mm | cm | m | km | in | ft | MM | CM | M | KM | IN | FT | C | F`
-`<number> := <integer> | <double>`
+`<number> := <integer> | <float>`
 `<digit> := 0|1|2|3|4|5|6|7|8|9`
 `<letter> := a-zA-Z`
 
