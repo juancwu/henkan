@@ -109,6 +109,7 @@ impl Lexer {
             "km" => Token::Kilometer,
             "c" => Token::Celcius,
             "f" => Token::Fahrenheit,
+            "to" | "as" | "in" => Token::Operator(word),
             _ => Token::Identifier(word),
         }
     }

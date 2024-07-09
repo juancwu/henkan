@@ -10,7 +10,7 @@ pub enum Token {
     Int(i64),
     Float(f64),
 
-    VerbOp, // verb operator
+    Operator(String), // verb operator
 
     // Metric
     Millimeter,
