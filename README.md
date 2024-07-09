@@ -11,9 +11,13 @@ As of now, for the MVP, this is the entire grammar for the unit converter.
 `<arg> := -<letter><arg'>`
 `<arg'> := <letter><arg'> | E`
 `<exp> := <value> <operator> <unit>`
-`<value> := <number><unit>`
+`<value> := <metric> | <temperature>`
+`<metric> := <number><metric_unit>`
+`<temperature> := <number><temperature_unit>`
+`<unit> := <metric_unit> | <temperature_unit>`
+`<temperature_unit> := C | Celsius | F | Fahrenheit`
 `<operator> := to | in | as`
-`<unit> := mm | cm | m | km | in | ft | MM | CM | M | KM | IN | FT | C | F`
+`<metric_unit> := mm | cm | m | km`
 `<number> := <integer> | <float>`
 `<digit> := 0|1|2|3|4|5|6|7|8|9`
 `<letter> := a-zA-Z`
