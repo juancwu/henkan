@@ -42,12 +42,31 @@ impl Lexer {
     /// ````
     pub fn next_token(&mut self) -> Token {
         let tok = match self.ch {
+            // this matches negative numbers or command arguments
+            Some('-') => {
+                let lead_ch = self.peek_char();
+                match lead_ch {
+                    Some(ch) => {
+                        if ch.is_digit(10) {
+                            // negative number
+                            return self.read_number();
+                        } else if ch.is_alphabetic() {
+                            let word = self.read_word();
+                            return Token::Identifier(word);
+                        }
+                        Token::Illegal
+                    }
+                    None => Token::EOL,
+                }
+            }
+            // this matches commands
             Some('\\') => {
                 // consume the backslash
                 self.read_char();
                 let word = self.read_word();
                 self.match_command(word)
             }
+            // this matches general identifiers or keywords such as units
             Some(ch) => {
                 if ch.is_digit(10) {
                     return self.read_number();
@@ -66,6 +85,10 @@ impl Lexer {
     // Reads a word which can be a keyword for commands, or units.
     fn read_word(&mut self) -> String {
         let pos = self.pos;
+        if self.ch.eq(&Some('-')) {
+            // consume - sign
+            self.read_char();
+        }
         while self.ch.is_some() && self.ch.unwrap().is_alphabetic() {
             self.read_char();
         }
@@ -108,6 +131,10 @@ impl Lexer {
     /// Reads a number which can be an integer or a float.
     fn read_number(&mut self) -> Token {
         let pos = self.pos;
+        if self.ch.eq(&Some('-')) {
+            // consume - sign
+            self.read_char();
+        }
         // read part of the number as integer
         while self.ch.is_some() && self.ch.unwrap().is_digit(10) {
             self.read_char();
