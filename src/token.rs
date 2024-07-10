@@ -1,7 +1,7 @@
 // NOTE: derive Debug to allow using "{:?}" formatter and PartialEq for == and != operations
 // PartialEq: https://doc.rust-lang.org/std/cmp/trait.PartialEq.html
 // Debug: https://doc.rust-lang.org/std/fmt/trait.Debug.html
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone, Copy)]
 pub enum Token {
     Illegal, // Illegal Characters
     EOL,     // End of Line
@@ -9,7 +9,10 @@ pub enum Token {
     // Number
     Number(f64),
 
-    Operator(String), // verb operator
+    // Operators
+    To,
+    In,
+    As,
 
     // Metric
     Millimeter,
@@ -20,9 +23,6 @@ pub enum Token {
     // Temperature
     Celcius,
     Fahrenheit,
-
-    // Identifier for commands and arguments
-    Identifier(String),
 
     // Command Keywords
     CopyCmd,

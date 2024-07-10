@@ -44,22 +44,6 @@ impl Lexer {
         self.skip_whitespaces();
         let tok = match self.ch {
             // this matches negative numbers or command arguments
-            Some('-') => {
-                let lead_ch = self.peek_char();
-                match lead_ch {
-                    Some(ch) => {
-                        if ch.is_digit(10) {
-                            // negative number
-                            return self.read_number();
-                        } else if ch.is_alphabetic() {
-                            let word = self.read_word();
-                            return Token::Identifier(word);
-                        }
-                        Token::Illegal
-                    }
-                    None => Token::EOL,
-                }
-            }
             // this matches commands
             Some('\\') => {
                 // consume the backslash
@@ -73,7 +57,7 @@ impl Lexer {
                     return self.read_number();
                 } else if ch.is_alphabetic() {
                     let word = self.read_word();
-                    return self.match_unit_or_identifier(word);
+                    return self.match_unit_or_operator(word);
                 }
                 Token::Illegal
             }
@@ -108,9 +92,9 @@ impl Lexer {
     /// # Example
     /// ````
     /// let word = self.read_word();
-    /// let token = self.match_unit_or_identifier(word);
+    /// let token = self.match_unit_or_operator(word);
     /// ````
-    fn match_unit_or_identifier(&mut self, word: String) -> Token {
+    fn match_unit_or_operator(&mut self, word: String) -> Token {
         match word.to_lowercase().as_str() {
             "mm" => Token::Millimeter,
             "cm" => Token::Centimeter,
@@ -118,8 +102,10 @@ impl Lexer {
             "km" => Token::Kilometer,
             "c" => Token::Celcius,
             "f" => Token::Fahrenheit,
-            "to" | "as" | "in" => Token::Operator(word),
-            _ => Token::Identifier(word),
+            "to" => Token::To,
+            "in" => Token::In,
+            "as" => Token::As,
+            _ => Token::Illegal,
         }
     }
 
