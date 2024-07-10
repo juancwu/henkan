@@ -69,6 +69,8 @@ fn main() {
                     println!("ast: {}{} {} {}", n, n_u, op, u);
                 }
             }
+        } else {
+            println!("Invalid input.")
         }
         print!("> ");
         io::stdout().flush().unwrap();
