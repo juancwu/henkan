@@ -7,8 +7,7 @@ pub enum Token {
     EOL,     // End of Line
 
     // Number
-    Int(i64),
-    Float(f64),
+    Number(f64),
 
     Operator(String), // verb operator
 

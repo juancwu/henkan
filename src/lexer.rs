@@ -161,11 +161,9 @@ impl Lexer {
             while self.ch.is_some() && self.ch.unwrap().is_digit(10) {
                 self.read_char();
             }
-
-            return Token::Float(self.input[pos..self.pos].parse().unwrap());
         }
 
-        Token::Int(self.input[pos..self.pos].parse().unwrap())
+        Token::Number(self.input[pos..self.pos].parse().unwrap())
     }
 
     /// Moves the input position one step.
