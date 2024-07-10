@@ -26,5 +26,12 @@ As of now, for the MVP, this is the entire grammar for the unit converter.
 
 This is a comprehensive list of keywords that are basically commands in our grammar.
 
-- `cp [-offset n]` copies the last result by default to the clipboard or specified the offset that needs to be copied.
-- `help` shows the help menu.
+-   `cp [-offset n]` copies the last result by default to the clipboard or specified the offset that needs to be copied.
+-   `help` shows the help menu.
+
+## Operation Process
+
+Henkan basically works like a programming language intepreter. It will boot up an interface for the user to type,
+then it will try to parse the line and evaluate it, and finally show the result back in the terminal.
+
+This is basically an intepreter like NodeJS shell or Python's too.
