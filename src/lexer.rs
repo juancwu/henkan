@@ -85,7 +85,7 @@ impl Lexer {
 
     // Check if we have reached the end of the input
     pub fn is_end(&self) -> bool {
-        match self.peek_char() {
+        match self.ch {
             Some(_) => false,
             None => true,
         }
