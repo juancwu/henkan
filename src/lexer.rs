@@ -96,24 +96,12 @@ impl Lexer {
     /// ````
     fn match_unit_or_operator(&mut self, word: String) -> Token {
         match word.to_lowercase().as_str() {
-            "mm" => Token::Metric {
-                unit: Box::new(Token::Millimeter),
-            },
-            "cm" => Token::Metric {
-                unit: Box::new(Token::Centimeter),
-            },
-            "m" => Token::Metric {
-                unit: Box::new(Token::Meter),
-            },
-            "km" => Token::Metric {
-                unit: Box::new(Token::Kilometer),
-            },
-            "c" => Token::Temperature {
-                unit: Box::new(Token::Celsius),
-            },
-            "f" => Token::Temperature {
-                unit: Box::new(Token::Fahrenheit),
-            },
+            "mm" => Token::Millimeter,
+            "cm" => Token::Centimeter,
+            "m" => Token::Meter,
+            "km" => Token::Kilometer,
+            "c" => Token::Celsius,
+            "f" => Token::Fahrenheit,
             "to" => Token::To,
             "in" => Token::In,
             "as" => Token::As,

@@ -29,20 +29,12 @@ pub fn parse_expression(tokens: &[Token]) -> Option<ASTNode> {
         return None;
     };
 
-    if !is_valid_unit(&tokens[1]) {
-        return None;
-    }
-
     let left_unit = tokens[1].clone();
 
     let op = match match_op(&tokens[2]) {
         Some(op) => op,
         None => return None,
     };
-
-    if !is_valid_unit(&tokens[3]) {
-        return None;
-    }
 
     let right_unit = tokens[3].clone();
 
@@ -54,21 +46,6 @@ pub fn parse_expression(tokens: &[Token]) -> Option<ASTNode> {
     })
 }
 
-/// Tries to match a unit in the given token.
-/// # Example
-/// ````
-/// if is_valid_unit(&token) {
-///     // do something...
-/// }
-/// ````
-fn is_valid_unit(token: &Token) -> bool {
-    match token {
-        Token::Metric { unit: _ } => true,
-        Token::Temperature { unit: _ } => true,
-        _ => false,
-    }
-}
-
 /// Tries to match an operator token for the given token.
 /// # Example
 /// ````
@@ -78,13 +55,10 @@ fn is_valid_unit(token: &Token) -> bool {
 /// }
 /// ````
 fn match_op(token: &Token) -> Option<Token> {
-    let op = match token {
-        Token::To => Token::To,
-        Token::In => Token::In,
-        Token::As => Token::As,
-        _ => {
-            return None;
-        }
-    };
-    Some(op)
+    match token {
+        Token::To => Some(Token::To),
+        Token::In => Some(Token::In),
+        Token::As => Some(Token::As),
+        _ => None,
+    }
 }

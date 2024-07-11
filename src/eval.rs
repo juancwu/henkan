@@ -1,4 +1,4 @@
-use crate::{parser::ASTNode, token::Token};
+use crate::{parser::ASTNode, token::Token, util::is_metric_unit};
 
 pub fn eval_expression_ast(ast: &ASTNode) -> f64 {
     match ast {
@@ -9,41 +9,44 @@ pub fn eval_expression_ast(ast: &ASTNode) -> f64 {
             operator: _op,
             unit,
         } => {
-            let n = match *value {
-                Token::Number(v) => v,
+            let n = match value {
+                Token::Number(v) => *v,
                 _ => 0.0,
             };
-            match (value_unit, unit) {
-                (Token::Metric { unit: from_unit }, Token::Metric { unit: to_unit }) => {
-                    convert_metric_unit(n, &from_unit, &to_unit)
-                }
-                (Token::Temperature { unit: _ }, Token::Temperature { unit: to_unit }) => {
-                    convert_temperature(n, &to_unit)
-                }
-                (_, _) => 0.0,
+            if let Some(converted_value) = convert_unit(n, value_unit, unit) {
+                converted_value
+            } else {
+                0.0
             }
         }
     }
 }
 
-/// Converts temperature values between Celsius and Fahrenheit.
-/// # Example
-/// ````
-/// let celsius = 24;
-/// let fahrenheit = convert_temperature(celsius, &Token::Fahrenheit);
-/// ````
-fn convert_temperature(value: f64, to: &Token) -> f64 {
-    match to {
-        Token::Celsius => {
-            let celsius = (value - 32.0) * 5.0 / 9.0;
-            celsius
+/// Base function to call when evaluating expressions.
+fn convert_unit(value: f64, from: &Token, to: &Token) -> Option<f64> {
+    match (from, to) {
+        (Token::Celsius, Token::Fahrenheit) => celsius_to_fahrenheit(value),
+        (Token::Fahrenheit, Token::Celsius) => fahrenheit_to_celsius(value),
+        (Token::Fahrenheit, Token::Fahrenheit) => Some(value),
+        (Token::Celsius, Token::Celsius) => {
+            println!("here");
+            Some(value)
         }
-        Token::Fahrenheit => {
-            let fahrenheit = value * 9.0 / 5.0 + 32.0;
-            fahrenheit
+        _ if is_metric_unit(from) && is_metric_unit(to) => {
+            Some(convert_metric_unit(value, from, to))
         }
-        _ => 0.0,
+        _ => None,
     }
+}
+
+/// Converts celsius to fahrenheit.
+fn celsius_to_fahrenheit(value: f64) -> Option<f64> {
+    Some(value * 9.0 / 5.0 + 32.0)
+}
+
+/// Converts fahrentheit to celsius.
+fn fahrenheit_to_celsius(value: f64) -> Option<f64> {
+    Some((value - 32.0) * 5.0 / 9.0)
 }
 
 /// Find the level in the metric scale where "meter" is the based unit.
