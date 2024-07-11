@@ -5,18 +5,14 @@ pub fn eval_expression_ast(ast: &ASTNode) -> f64 {
         ASTNode::Expr {
             value,
             value_unit,
-            operator,
+            // Skippping operator because for now all operators are uni-directional
+            operator: _op,
             unit,
         } => {
             let n = match *value {
                 Token::Number(v) => v,
                 _ => 0.0,
             };
-            // Skippping operator because for now all operators are uni-directional
-            let op = match *operator {
-                _ => "",
-            };
-            println!("WARN: Skipping operatore for expression. All operators are uni-directional now. OP: {}", op);
             match (value_unit, unit) {
                 (Token::Metric { unit: from_unit }, Token::Metric { unit: to_unit }) => {
                     convert_metric_unit(n, &from_unit, &to_unit)

@@ -24,7 +24,6 @@ fn main() {
             if token == Token::EOL {
                 break;
             }
-            println!("token: {:?}", token);
         }
         let ast = parse_expression(&tokens);
         if ast.is_some() {
