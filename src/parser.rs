@@ -1,5 +1,5 @@
 use crate::token::Token;
-use std::fmt::{self, write};
+use std::fmt::{self};
 
 pub enum ASTNode {
     Expr {
@@ -66,7 +66,7 @@ fn match_unit(token: &Token) -> Option<Token> {
         Token::Millimeter => Token::Millimeter,
         Token::Meter => Token::Meter,
         Token::Kilometer => Token::Kilometer,
-        Token::Celcius => Token::Celcius,
+        Token::Celsius => Token::Celsius,
         Token::Fahrenheit => Token::Fahrenheit,
         _ => {
             return None;

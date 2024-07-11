@@ -20,9 +20,10 @@ fn main() {
         let l = line.unwrap();
         let mut lexer = Lexer::new(l);
         let mut tokens: Vec<Token> = vec![];
+        let mut token: Token;
         while !lexer.is_end() {
-            let token = lexer.next_token();
-            tokens.push(token);
+            token = lexer.next_token();
+            tokens.push(token.clone());
             if token == Token::EOL {
                 break;
             }
