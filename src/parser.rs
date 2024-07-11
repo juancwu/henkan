@@ -29,20 +29,22 @@ pub fn parse_expression(tokens: &[Token]) -> Option<ASTNode> {
         return None;
     };
 
-    let left_unit = match match_unit(&tokens[1]) {
-        Some(u) => u,
-        None => return None,
-    };
+    if !is_valid_unit(&tokens[1]) {
+        return None;
+    }
+
+    let left_unit = tokens[1].clone();
 
     let op = match match_op(&tokens[2]) {
         Some(op) => op,
         None => return None,
     };
 
-    let right_unit = match match_unit(&tokens[3]) {
-        Some(u) => u,
-        None => return None,
-    };
+    if !is_valid_unit(&tokens[3]) {
+        return None;
+    }
+
+    let right_unit = tokens[3].clone();
 
     Some(ASTNode::Expr {
         value: left,
@@ -55,24 +57,16 @@ pub fn parse_expression(tokens: &[Token]) -> Option<ASTNode> {
 /// Tries to match a unit in the given token.
 /// # Example
 /// ````
-/// let unit = match match_unit(token) {
-///     Some(t) => t,
-///     None => None,
-/// };
+/// if is_valid_unit(&token) {
+///     // do something...
+/// }
 /// ````
-fn match_unit(token: &Token) -> Option<Token> {
-    let t = match token {
-        Token::Centimeter => Token::Centimeter,
-        Token::Millimeter => Token::Millimeter,
-        Token::Meter => Token::Meter,
-        Token::Kilometer => Token::Kilometer,
-        Token::Celsius => Token::Celsius,
-        Token::Fahrenheit => Token::Fahrenheit,
-        _ => {
-            return None;
-        }
-    };
-    Some(t)
+fn is_valid_unit(token: &Token) -> bool {
+    match token {
+        Token::Metric { unit: _ } => true,
+        Token::Temperature { unit: _ } => true,
+        _ => false,
+    }
 }
 
 /// Tries to match an operator token for the given token.
