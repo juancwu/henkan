@@ -1,26 +1,37 @@
 # Henkan!
 
-Ergonomic unit converter in the terminal.
+Ergonomic calculator with a unit converter in the terminal.
 
 ## Grammar
 
-As of now, for the MVP, this is the entire grammar for the unit converter.
+Extensive grammar to make it an ergonomic calculator with a touch of unit conversion.
+The calculator works line by line so there is no explicit need for a separator. However,
+to make the grammar better to parse, we'll use an optional ';' as an indicator of end of line.
 
-`<command> := \<keyword> <command'>`
-`<command'> := <arg> <command'> | E`
-`<arg> := -<letter><arg'>`
-`<arg'> := <letter><arg'> | E`
-`<exp> := <value> <operator> <unit>`
-`<value> := <metric> | <temperature>`
-`<metric> := <number><metric_unit>`
-`<temperature> := <number><temperature_unit>`
-`<unit> := <metric_unit> | <temperature_unit>`
-`<temperature_unit> := C | Celsius | F | Fahrenheit`
-`<operator> := to | in | as`
-`<metric_unit> := mm | cm | m | km`
-`<number> := <integer> | <float>`
-`<digit> := 0|1|2|3|4|5|6|7|8|9`
-`<letter> := a-zA-Z`
+```
+// Command related grammar
+<command> := \<keyword> <command'>
+<command'> := <arg> <command'> | E
+<arg> := --<identifier><arg'>
+<arg'> := <identifier> | <number> | E
+
+// Calculator related grammar
+<statement> := <expression> | <command> | <assignment>
+<assignment> := <identifier> = <exp>
+<identifier> := <letter><identifier'>
+<identifier'> := <letter><identifier'> | E
+<expression> := <value> <operator> <unit> | (<expression>)
+<value> := <metric> | <temperature>
+<metric> := <number><metric_unit>
+<temperature> := <number><temperature_unit>
+<unit> := <metric_unit> | <temperature_unit>
+<temperature_unit> := C | Celsius | F | Fahrenheit
+<operator> := to | in | as
+<metric_unit> := pm | nm | um | mm | cm | dm | m | dam | hm | km | Mm | Gm | Tm
+<number> := <integer> | <float>
+<digit> := 0..9
+<letter> := a..z | A..Z
+```
 
 ## Keywords
 
